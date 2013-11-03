@@ -1,0 +1,38 @@
+<?php
+$title = 'My Questions';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title)?></h1>
+<p><a class="btn btn-default" href="<?php echo $this->url('questions/add');?>">Add new Question</a></p>
+
+<?php if (count($this->paginator)): ?>
+<table class="table table-hover">
+    <tr>
+        <th>Question</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach($this->paginator as $question) : ?>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url('questions/view',
+                    array('id' => $question->getId()));?>"><?php echo $this->escapeHtml($question->getQuestion());?></a>
+            </td>
+            <td>
+                <div class="pull-right btn-group">
+                    <a class="btn btn-default btn-xs" href="<?php echo $this->url('questions/send',
+                        array('question' => $question->getId()));?>">Send</a>
+                    <a class="btn btn-default btn-xs" href="<?php echo $this->url('questions/email-list',
+                        array('question' => $question->getId()));?>">Email list</a>
+                    <a class="btn btn-default btn-xs" href="<?php echo $this->url('questions/edit',
+                        array('id' => $question->getId()));?>">Edit</a>
+                    <a class="btn btn-default btn-xs" href="<?php echo $this->url('questions/delete',
+                        array('id' => $question->getId()));?>">Delete</a>
+                </div>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+    <?php echo $this->paginationControl($this->paginator,
+        'Sliding',
+        'pagination', array('route' => 'questions')); ?>
+<?php endif; ?>

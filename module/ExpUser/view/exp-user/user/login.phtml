@@ -1,0 +1,26 @@
+<h1>Sign In</h1>
+
+<?php
+$form = $this->loginForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/login'));
+$form->setAttribute('method', 'post');
+?>
+
+<?php
+echo $this->form()->openTag($form);
+
+echo $this->formElementErrors($form->get('identity'));
+echo $this->formRow($form->get('identity'));
+echo $this->formRow($form->get('credential'));
+?>
+<?php if ($this->redirect): ?>
+    <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+<?php endif ?>
+<?php echo $this->formRow($form->get('submit')) ?>
+
+<?php echo $this->form()->closeTag() ?>
+
+<?php if ($this->enableRegistration) : ?>
+Not registered? <a href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Sign up!</a>
+<?php endif; ?>

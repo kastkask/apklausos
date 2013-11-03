@@ -1,0 +1,65 @@
+<?php
+$title = $this->question->getQuestion();
+$this->headTitle($title);
+?>
+
+<div class="page-header">
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+</div>
+
+<?php
+$data = array(
+    array('Answers'),
+    array(''),
+);
+foreach ($question->getAnswers() as $answer)
+{
+    $data[0][] = $answer->getAnswer();
+    $data[1][] = $answer->getEmails()->count();
+}
+$email_stats = array(
+    array('state', 'New', 'Sent', 'Viewed', 'Answered'),
+    array('', 0, 0, 0, 0),
+);
+foreach ($question->getEmails() as $email)
+{
+    $email_stats[1][$email->getState()+1] += 1;
+}
+?>
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    function drawCharts(){
+        drawChart();
+        drawChart2();
+    }
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawCharts);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(<?php echo json_encode($data);?>);
+
+        var options = {
+            title: 'Question votes',
+            legend:{position: 'bottom', textStyle: {color: 'blue', fontSize: 16}},
+            height:400
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_answers'));
+        chart.draw(data, options);
+    }
+    function drawChart2() {
+        var data = google.visualization.arrayToDataTable(<?php echo json_encode($email_stats);?>);
+
+        var options = {
+            title: 'Email stats',
+            legend:{position: 'bottom', textStyle: {color: 'blue', fontSize: 16}},
+            height:400
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_emailstats'));
+        chart.draw(data, options);
+    }
+</script>
+<!--Div that will hold the pie chart-->
+<div id="chart_answers"></div>
+<div id="chart_emailstats"></div>

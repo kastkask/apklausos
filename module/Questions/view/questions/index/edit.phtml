@@ -1,0 +1,18 @@
+<?php
+$title = 'Edit Question';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('questions/edit', array('id' => $this->id)));
+$form->prepare();
+
+echo $this->form()->openTag($form) . PHP_EOL;
+echo $this->formRow($form->get('question')->get('id')) . PHP_EOL;
+echo $this->formRow($form->get('question')->get('question')) . PHP_EOL;
+echo $this->formCollection($form->get('question')->get('answers')) . PHP_EOL;
+echo $this->formInput($form->get('submit')) . PHP_EOL;
+echo $this->form()->closeTag($form) . PHP_EOL;
+?>

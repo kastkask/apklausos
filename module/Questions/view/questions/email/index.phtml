@@ -1,0 +1,45 @@
+<?php
+$title = 'Email list';
+$this->headTitle($title);
+?>
+<div class="page-header">
+    <h1>Email list <small>Question: <?php echo $this->escapeHtml($this->question->getQuestion());?></small></h1>
+</div>
+
+<p><a class="btn btn-default" href="<?php echo $this->url('questions/import-emails', array('question' => $this->question->getId()));?>">Import from CSV file</a></p>
+
+<?php if (count($this->paginator)): ?>
+<table class="table table-hover">
+    <tr>
+        <th>Email</th>
+        <th>Status</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach($this->paginator as $email) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($email->getEmail());?></td>
+            <td><?php
+                switch ($email->getState()) {
+                    case 0:
+                        echo '<span class="label label-default">' . $this->translate('New') . '</span>';
+                        break;
+                    case 1:
+                        echo '<span class="label label-warning">' . $this->translate('Sent') . '</span>';
+                        break;
+                    case 2:
+                        echo '<span class="label label-info">' . $this->translate('Viewed') . '</span>';
+                        break;
+                    case 3:
+                        echo '<span class="label label-success">' . $this->translate('Answered') . '</span> ' . $this->escapeHtml($email->getAnswer()->getAnswer());
+                } ?></td>
+            <td>
+                <a class="pull-right btn btn-default btn-xs" href="<?php echo $this->url('questions/delete-email',
+                    array('id' => $email->getId()));?>"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<?php echo $this->paginationControl($this->paginator,
+        'Sliding',
+        'emails_pagination', array('route' => 'questions/email-list', 'question' => $this->question)); ?>
+<?php endif; ?>

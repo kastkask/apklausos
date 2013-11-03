@@ -1,0 +1,23 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle('Questions App')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <?php echo $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+</head>
+<body>
+<h1><?php echo $this->escapeHtml($this->question->getQuestion());?></h1>
+<ol>
+    <?php foreach($this->question->getAnswers() as $answer):?>
+    <li><a href="http://<?php echo $this->escapeHtml($_SERVER['HTTP_HOST']);?><?php echo $this->url('vote',
+            array('email' => $email->getId(), 'answer' => $answer->getId()));?>"><?php echo $this->escapeHtml($answer->getAnswer());?></a></li>
+    <?php endforeach;?>
+</ol>
+<img src="http://<?php echo $this->escapeHtml($_SERVER['HTTP_HOST']);?>/images/<?php echo $this->escapeHtml($this->email->getId()); ?>/fake.png" alt=""/>
+</body>
+</html>

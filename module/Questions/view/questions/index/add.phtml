@@ -1,0 +1,33 @@
+<?php
+$title = 'Sukurti naują klausimą';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('questions/add'));
+$form->prepare();
+
+echo $this->form()->openTag($form) . PHP_EOL;
+//echo $this->formRow($form->get('question')->get('id')) . PHP_EOL;
+echo $this->formRow($form->get('question')->get('question')) . PHP_EOL;
+//echo $this->formRow($form->get('artist')) . PHP_EOL;
+echo $this->formCollection($form->get('question')->get('answers')) . PHP_EOL;
+echo $this->formInput($form->get('submit')) . PHP_EOL;
+//echo $this->formRow($form->get('csvfile')) . PHP_EOL;
+echo '<button onclick="return add_answer()">Add a new category</button>';
+echo $this->form()->closeTag($form) . PHP_EOL;
+?>
+
+<script>
+    function add_answer() {
+        var currentCount = $('form > fieldset > fieldset').length;
+        var template = $('form > fieldset > span').data('template');
+        template = template.replace(/__index__/g, currentCount);
+
+        $('form > fieldset').append(template);
+
+        return false;
+    }
+</script>
