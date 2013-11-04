@@ -22,6 +22,15 @@ return array(
         'user_entity_class'       => 'ExpUser\Entity\User',
         // telling ZfcUserDoctrineORM to skip the entities it defines
         'enable_default_entities' => false,
+        /**
+         * Login After Registration
+         *
+         * Automatically logs the user in after they successfully register. Default
+         * value is false.
+         *
+         * Accepted values: boolean true or false
+         */
+        'login_after_registration' => true,
     ),
     'controllers' => array(
         'invokables' => array(
