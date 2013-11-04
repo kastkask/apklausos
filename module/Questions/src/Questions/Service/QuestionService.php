@@ -100,6 +100,9 @@ class QuestionService
         $transport = new Mail\Transport\Sendmail();
         foreach($emails as $email)
         {
+            if ($email->getState() !== Email::STATE_NEW)
+                continue;
+
             $view_renderer = $this->getViewRenderer();
             $content = $view_renderer->render('email/template/question',
                 array(
