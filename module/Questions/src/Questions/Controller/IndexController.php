@@ -43,10 +43,10 @@ class IndexController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $questions = $this->getServiceLocator()->get('Questions\Service\QuestionService');
-                $questions->create($form->getData());
+                $question = $questions->create($question);
 
                 // Redirect to list of questions
-                return $this->redirect()->toRoute('questions');
+                return $this->redirect()->toRoute('questions/import-emails', array('question' => $question->getId()));
             }
         }
 
