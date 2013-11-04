@@ -166,7 +166,7 @@ class QuestionService
     {
         $entityManager = $this->getEntityManager();
 
-        $email = $this->getEmail($email);
+        $email = $this->getEmail($email, false);
         $answer = $entityManager->find('Questions\Entity\Answer', $answer);
 
         if ($email->getQuestion()->getId() !== $answer->getQuestion()->getId()) {
