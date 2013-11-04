@@ -18,7 +18,6 @@ class QuestionFormFactory implements FactoryInterface
 
         $hydrator = new DoctrineHydrator($entityManager, 'Questions\Entity\Question');
         $hydrator->addStrategy('answers', new Strategy\DisallowRemoveByValue());
-        $hydrator->addStrategy('answers', new Strategy\DisallowRemoveByReference());
 
         $form = new \Questions\Form\QuestionForm('question_form');
         $form
