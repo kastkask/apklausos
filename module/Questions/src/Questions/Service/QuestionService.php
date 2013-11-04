@@ -115,7 +115,8 @@ class QuestionService
 
             $mail = new Mail\Message();
             $mail->setBody($body);
-            $mail->setFrom('noreplay@misc.lt', 'Questions App');
+            // serveriai.lt has some crazy configuration and doesnt let use '-f email' so no setFrom()
+            $mail->setReplyTo('noreplay@misc.lt', 'Questions App');
             $mail->addTo($email->getEmail());
             $mail->setSubject('New Question');
 
