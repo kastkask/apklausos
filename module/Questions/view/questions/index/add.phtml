@@ -10,13 +10,10 @@ $form->setAttribute('action', $this->url('questions/add'));
 $form->prepare();
 
 echo $this->form()->openTag($form) . PHP_EOL;
-//echo $this->formRow($form->get('question')->get('id')) . PHP_EOL;
 echo $this->formRow($form->get('question')->get('question')) . PHP_EOL;
-//echo $this->formRow($form->get('artist')) . PHP_EOL;
 echo $this->formCollection($form->get('question')->get('answers')) . PHP_EOL;
-echo $this->formInput($form->get('submit')) . PHP_EOL;
-//echo $this->formRow($form->get('csvfile')) . PHP_EOL;
-echo '<button onclick="return add_answer()">Add a new category</button>';
+echo '<div class="form-group"><button class="btn btn-link" onclick="return add_answer()">Add a new answer</button></div>';
+echo $this->formRow($form->get('submit')) . PHP_EOL;
 echo $this->form()->closeTag($form) . PHP_EOL;
 ?>
 
