@@ -73,7 +73,7 @@ class EmailController extends AbstractActionController
                 $this->getRequest()->getFiles()->toArray()
             );
 
-            //set data post and file ...   
+            //set data post and file ...
             $form->setData($data);
 
             if ($form->isValid()) {
