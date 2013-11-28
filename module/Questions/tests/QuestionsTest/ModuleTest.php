@@ -21,4 +21,9 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
             $this->fail('getAutoloaderConfig expected to return array or Traversable');
         }
     }
+
+    public function testTravisBuild()
+    {
+        $this->assertTrue(false, 'atrodo veikia :D');
+    }
 }
