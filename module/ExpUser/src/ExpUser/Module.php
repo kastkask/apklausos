@@ -7,6 +7,7 @@ class Module {
     public function onBootstrap(MvcEvent $mvcEvent)
     {
         $zfcServiceEvents = $mvcEvent->getApplication()->getServiceManager()->get('zfcuser_user_service')->getEventManager();
+        // after user registered we have to assign role
         $zfcServiceEvents->attach('register', function($e) use($mvcEvent) {
             $user = $e->getParam('user');
             $em = $mvcEvent->getApplication()->getServiceManager()->get('Doctrine\ORM\EntityManager');
