@@ -172,9 +172,11 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'Questions\Controller\Index' => 'Questions\Controller\IndexController',
             'Questions\Controller\Email' => 'Questions\Controller\EmailController',
         ),
+        'factories' => array(
+            'Questions\Controller\Index' => 'Questions\factory\IndexControllerFactory',
+        )
     ),
 
     'form_elements' => array(

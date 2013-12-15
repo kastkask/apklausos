@@ -7,16 +7,17 @@ use Questions\Entity\Question;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Questions\Service;
-
-use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineModule\Paginator\Adapter\Collection as CollectionAdapter;
 use Zend\Paginator\Paginator;
 
 class IndexController extends AbstractActionController
 {
+    protected $questionsService;
+    protected $questionsForm;
+
     public function indexAction()
     {
-        $questions = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $questions = $this->getQuestionsService();
 
         // Create the adapter
         $adapter = new CollectionAdapter($questions->getQuestions());
@@ -32,17 +33,17 @@ class IndexController extends AbstractActionController
     }
     public function addAction()
     {
-        $form = $this->getServiceLocator()->get('FormElementManager')->get('Questions\Form\QuestionForm');
+        $form = $this->getQuestionForm();
         $form->get('question')->remove('id');
-
-        $question = new Question();
-        $form->bind($question);
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $question = new Question();
+            $form->bind($question);
             $form->setData($request->getPost());
+
             if ($form->isValid()) {
-                $questions = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+                $questions = $this->getQuestionsService();
                 $question = $questions->create($question);
 
                 // Redirect to list of questions
@@ -57,14 +58,14 @@ class IndexController extends AbstractActionController
     {
         $id = (int)$this->params('id');
 
-        $question_service = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $question_service = $this->getQuestionsService();
         $question = $question_service->getQuestion($id);
 
         if (!$question) {
             return $this->redirect()->toRoute('questions');
         }
 
-        $form = $this->getServiceLocator()->get('FormElementManager')->get('Questions\Form\QuestionForm');
+        $form = $this->getQuestionForm();
         $form->bind($question);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -89,7 +90,7 @@ class IndexController extends AbstractActionController
     {
         $id = (int)$this->params('id');
 
-        $question_service = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $question_service = $this->getQuestionsService();
         $question = $question_service->getQuestion($id);
 
         if (!$question) {
@@ -105,7 +106,7 @@ class IndexController extends AbstractActionController
     {
         $id = (int)$this->params('email');
 
-        $question_service = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $question_service = $this->getQuestionsService();
         $email = $question_service->getEmail($id, false);
 
         if (!$email) {
@@ -128,7 +129,7 @@ class IndexController extends AbstractActionController
     public function sendAction()
     {
         $id = (int)$this->params('question');
-        $question_service = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $question_service = $this->getQuestionsService();
         $question = $question_service->getQuestion($id);
 
         if (!$question) {
@@ -146,7 +147,7 @@ class IndexController extends AbstractActionController
         $email_id = (int)$this->params('email');
         $answer_id = (int)$this->params('answer');
 
-        $question_service = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $question_service = $this->getQuestionsService();
 
         $email = $question_service->vote($email_id, $answer_id);
 
@@ -161,7 +162,7 @@ class IndexController extends AbstractActionController
     public function deleteAction()
     {
         $id = (int)$this->params('id');
-        $question_service = $this->getServiceLocator()->get('Questions\Service\QuestionService');
+        $question_service = $this->getQuestionsService();
         $question = $question_service->getQuestion($id);
 
         if (!$question) {
@@ -172,5 +173,27 @@ class IndexController extends AbstractActionController
 
         // Redirect to list of questions
         return $this->redirect()->toRoute('questions');
+    }
+
+    public function setQuestionsService($questionsService)
+    {
+        $this->questionsService = $questionsService;
+        return $this;
+    }
+
+    public function getQuestionsService()
+    {
+        return $this->questionsService;
+    }
+
+    public function setQuestionForm($questionsForm)
+    {
+        $this->questionsForm = $questionsForm;
+        return $this;
+    }
+
+    public function getQuestionForm()
+    {
+        return $this->questionsForm;
     }
 }
