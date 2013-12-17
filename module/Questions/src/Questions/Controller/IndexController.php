@@ -165,7 +165,7 @@ class IndexController extends AbstractActionController
         $question_service = $this->getQuestionsService();
         $question = $question_service->getQuestion($id);
 
-        if (!$question) {
+        if ($question) {
             return $this->redirect()->toRoute('questions');
         }
 
