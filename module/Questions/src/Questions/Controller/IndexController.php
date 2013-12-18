@@ -33,6 +33,7 @@ class IndexController extends AbstractActionController
     }
     public function addAction()
     {
+        return null;
         $form = $this->getQuestionForm();
         $form->get('question')->remove('id');
 
